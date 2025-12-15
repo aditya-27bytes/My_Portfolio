@@ -142,7 +142,7 @@
   }
 
   .project-card {
-    @apply relative overflow-hidden rounded-xl group cursor-pointer;
+    @apply relative overflow-hidden rounded-xl cursor-pointer;
   }
 
   .project-card::before {
