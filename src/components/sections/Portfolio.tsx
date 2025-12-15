@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Github } from "lucide-react";
 
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.png";
@@ -24,7 +24,8 @@ const Portfolio = () => {
       subtitle: "MERN + OpenAI API — Dec 2024",
       category: "fullstack",
       image: project1,
-      link: "https://github.com/aditya-27bytes",
+      github: "https://github.com/aditya-27bytes/vtun-note",
+      demo: "https://vtun-note.vercel.app",
       description: "AI assistant parsing PDFs for summaries, flashcards, and concept maps. 1000+ concurrent users.",
     },
     {
@@ -33,7 +34,8 @@ const Portfolio = () => {
       subtitle: "Rust + WebSockets — Nov 2024",
       category: "systems",
       image: project2,
-      link: "https://github.com/aditya-27bytes",
+      github: "https://github.com/aditya-27bytes/solar-shield",
+      demo: null,
       description: "NASA Space Weather Monitor with sub-100ms latency handling 10,000+ data points/min.",
     },
     {
@@ -42,7 +44,8 @@ const Portfolio = () => {
       subtitle: "Python + Cryptography — Oct 2024",
       category: "systems",
       image: project3,
-      link: "https://github.com/aditya-27bytes",
+      github: "https://github.com/aditya-27bytes/educational-keylogger",
+      demo: null,
       description: "Cybersecurity tool demonstrating attack vectors and defensive countermeasures.",
     },
     {
@@ -51,7 +54,8 @@ const Portfolio = () => {
       subtitle: "TensorFlow + OpenCV — Sep 2024",
       category: "ai",
       image: project4,
-      link: "https://github.com/aditya-27bytes",
+      github: "https://github.com/aditya-27bytes/hand-gesture-recognition",
+      demo: null,
       description: "Real-time computer vision with 95%+ accuracy at 30 FPS.",
     },
     {
@@ -60,7 +64,8 @@ const Portfolio = () => {
       subtitle: "Chrome API — Aug 2024",
       category: "fullstack",
       image: project5,
-      link: "https://github.com/aditya-27bytes",
+      github: "https://github.com/aditya-27bytes/scroll-shame",
+      demo: null,
       description: "Distraction-free YouTube extension with viewing analytics and autoplay blocking.",
     },
   ];
@@ -92,11 +97,8 @@ const Portfolio = () => {
       {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProjects.map((project, index) => (
-          <a
+          <div
             key={project.id}
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
             className="project-card group block animate-scale-in"
             style={{ animationDelay: `${index * 100}ms` }}
           >
@@ -111,16 +113,33 @@ const Portfolio = () => {
               <h3 className="text-lg font-semibold text-foreground">{project.title}</h3>
               <p className="text-sm text-primary mb-1">{project.subtitle}</p>
               <p className="text-xs text-muted-foreground mb-3">{project.description}</p>
-              <span className="inline-flex items-center gap-1 text-primary text-sm font-medium">
-                View Project <ExternalLink className="w-4 h-4" />
-              </span>
+              <div className="flex items-center gap-3">
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-foreground hover:text-primary text-sm font-medium transition-colors"
+                >
+                  <Github className="w-4 h-4" /> Code
+                </a>
+                {project.demo && (
+                  <a
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-primary text-sm font-medium hover:underline"
+                  >
+                    <ExternalLink className="w-4 h-4" /> Live Demo
+                  </a>
+                )}
+              </div>
             </div>
             {/* Always visible title overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background via-background/80 to-transparent group-hover:opacity-0 transition-opacity duration-300">
               <h3 className="font-medium text-foreground">{project.title}</h3>
               <p className="text-sm text-muted-foreground">{project.subtitle}</p>
             </div>
-          </a>
+          </div>
         ))}
       </div>
     </section>
