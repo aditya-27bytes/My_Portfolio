@@ -90,7 +90,7 @@ const Portfolio = () => {
           <a
             key={project.id}
             href={project.link}
-            className="project-card block animate-scale-in"
+            className="project-card group block animate-scale-in"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             <div className="aspect-[4/3] overflow-hidden">
