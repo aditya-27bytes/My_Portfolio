@@ -1,12 +1,77 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState, useEffect } from "react";
+import Sidebar from "@/components/Sidebar";
+import Navigation from "@/components/Navigation";
+import About from "@/components/sections/About";
+import Resume from "@/components/sections/Resume";
+import Portfolio from "@/components/sections/Portfolio";
+import Contact from "@/components/sections/Contact";
 
 const Index = () => {
+  const [activeSection, setActiveSection] = useState("about");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section);
+    setSidebarOpen(false);
+    
+    // Scroll to section smoothly
+    const element = document.getElementById(section);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  // Handle scroll to update active section
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["about", "resume", "portfolio", "contact"];
+      const scrollPosition = window.scrollY + 200;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col min-h-screen">
+        <Navigation
+          activeSection={activeSection}
+          onSectionChange={handleSectionChange}
+          onMenuClick={() => setSidebarOpen(true)}
+        />
+
+        <div className="flex-1 px-6 lg:px-12 xl:px-16 max-w-5xl mx-auto w-full">
+          <About />
+          <Resume />
+          <Portfolio />
+          <Contact />
+        </div>
+
+        {/* Footer */}
+        <footer className="py-6 px-6 text-center text-sm text-muted-foreground border-t border-border mt-12 mb-16 lg:mb-0">
+          <p>
+            © {new Date().getFullYear()} Aditya Chougale. Built with{" "}
+            <span className="text-primary">passion</span> and{" "}
+            <span className="text-primary">code</span>.
+          </p>
+        </footer>
+      </main>
     </div>
   );
 };
