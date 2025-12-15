@@ -4,46 +4,46 @@ const Resume = () => {
   const education = [
     {
       title: "Bachelor of Engineering in Computer Science",
-      institution: "Pune Institute of Computer Technology",
-      period: "2021 — 2025",
-      description: "Focused on software development, algorithms, and machine learning applications.",
-    },
-    {
-      title: "Higher Secondary Education",
-      institution: "Maharashtra State Board",
-      period: "2019 — 2021",
-      description: "Science stream with focus on Mathematics and Computer Science.",
+      institution: "KLE Institute of Technology",
+      period: "Oct 2022 — Present",
+      description: "CGPA: 8.0 — Focused on software development, algorithms, and machine learning applications.",
     },
   ];
 
   const certifications = [
     {
-      title: "AWS Certified Solutions Architect",
-      issuer: "Amazon Web Services",
+      title: "Cybersecurity Master Program",
+      issuer: "Vijesha IT",
       period: "2024",
-      description: "Cloud architecture and deployment strategies.",
+      description: "Advanced penetration testing and security operations.",
     },
     {
       title: "Google Cybersecurity Professional",
       issuer: "Google",
-      period: "2023",
+      period: "2024",
       description: "Security operations and threat analysis.",
     },
     {
-      title: "Meta Front-End Developer",
-      issuer: "Meta",
-      period: "2023",
-      description: "Modern React and frontend development practices.",
+      title: "Tata Cybersecurity Analyst",
+      issuer: "Tata",
+      period: "2024",
+      description: "Enterprise security and vulnerability assessment.",
+    },
+    {
+      title: "AWS APAC Solutions Architecture",
+      issuer: "Amazon Web Services",
+      period: "2024",
+      description: "Cloud architecture and deployment strategies.",
     },
   ];
 
   const skills = [
-    { name: "Python / C++ / Rust", percentage: 90 },
-    { name: "JavaScript / TypeScript", percentage: 95 },
-    { name: "MERN Stack", percentage: 92 },
-    { name: "Machine Learning", percentage: 85 },
-    { name: "Cybersecurity Tools", percentage: 80 },
-    { name: "Cloud & DevOps", percentage: 78 },
+    { name: "Python / C++ / Rust / TypeScript", percentage: 92 },
+    { name: "React / Node.js / Next.js (MERN)", percentage: 95 },
+    { name: "TensorFlow / PyTorch / OpenCV", percentage: 88 },
+    { name: "MongoDB / PostgreSQL / Firebase", percentage: 90 },
+    { name: "AWS / Docker / Kubernetes", percentage: 85 },
+    { name: "Penetration Testing / Kali Linux", percentage: 82 },
   ];
 
   return (
@@ -71,6 +71,16 @@ const Resume = () => {
                 <p className="text-sm text-muted-foreground">{item.description}</p>
               </div>
             ))}
+          </div>
+
+          {/* Labs & Achievements */}
+          <div className="mt-8 p-4 rounded-xl bg-secondary/50 border border-border">
+            <h4 className="font-medium text-foreground mb-2">Labs & Leadership</h4>
+            <ul className="text-sm text-muted-foreground space-y-1">
+              <li>• 50+ penetration testing labs on Hack The Box & TryHackMe</li>
+              <li>• Privilege escalation, OWASP Top 10, CTFs</li>
+              <li>• Media Team Head at KLE Institute</li>
+            </ul>
           </div>
         </div>
 

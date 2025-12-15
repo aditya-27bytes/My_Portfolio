@@ -45,14 +45,14 @@ const Contact = () => {
         {/* Map */}
         <div className="rounded-2xl overflow-hidden border border-border h-[300px] lg:h-full min-h-[300px]">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242117.68147842095!2d73.72287829018827!3d18.524598939498784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra%2C%20India!5e0!3m2!1sen!2sus!4v1703001234567!5m2!1sen!2sus"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d122270.77aboron7!2d75.0624!3d15.3647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb8d7549734c4d3%3A0x4c0e9b6f2b2e9fc8!2sHubli%2C%20Karnataka%2C%20India!5e0!3m2!1sen!2sus!4v1703001234567!5m2!1sen!2sus"
             width="100%"
             height="100%"
             style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Location Map"
+            title="Location Map - Hubli, Karnataka"
           />
         </div>
 
@@ -64,7 +64,7 @@ const Contact = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Based in</p>
-              <p className="font-medium">Pune, Maharashtra, India</p>
+              <p className="font-medium">Hubli, Karnataka, India</p>
             </div>
           </div>
 
