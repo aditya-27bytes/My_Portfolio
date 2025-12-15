@@ -11,14 +11,14 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const [showContacts, setShowContacts] = useState(false);
 
   const contacts = [
-    { icon: Mail, label: "Email", value: "aditya@example.com", href: "mailto:aditya@example.com" },
-    { icon: Phone, label: "Phone", value: "+91 98765 43210", href: "tel:+919876543210" },
-    { icon: MapPin, label: "Location", value: "Pune, India", href: "#" },
+    { icon: Mail, label: "Email", value: "adityasanjaychougale27@gmail.com", href: "mailto:adityasanjaychougale27@gmail.com" },
+    { icon: Phone, label: "Phone", value: "+91 7353167822", href: "tel:+917353167822" },
+    { icon: MapPin, label: "Location", value: "Hubli, Karnataka", href: "#" },
   ];
 
   const socials = [
-    { icon: Linkedin, href: "https://linkedin.com/in/adityachougale", label: "LinkedIn" },
-    { icon: Github, href: "https://github.com/adityachougale", label: "GitHub" },
+    { icon: Linkedin, href: "https://linkedin.com/in/aditya-chougale-953330259", label: "LinkedIn" },
+    { icon: Github, href: "https://github.com/aditya-27bytes", label: "GitHub" },
   ];
 
   return (
@@ -52,7 +52,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             <div className="w-36 h-36 rounded-2xl overflow-hidden gradient-border glow-primary">
               <img 
                 src={avatar} 
-                alt="Aditya Chougale - Full Stack Developer" 
+                alt="Aditya Sanjay Chougale - Full Stack Developer" 
                 className="w-full h-full object-cover"
               />
             </div>
@@ -60,8 +60,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           </div>
 
           {/* Name & Title */}
-          <h1 className="text-xl font-semibold text-foreground mb-1 animate-fade-up animation-delay-200">
-            Aditya Chougale
+          <h1 className="text-xl font-semibold text-foreground mb-1 animate-fade-up animation-delay-200 text-center">
+            Aditya Sanjay Chougale
           </h1>
           <p className="text-sm text-primary font-medium mb-6 animate-fade-up animation-delay-400">
             Full Stack Developer

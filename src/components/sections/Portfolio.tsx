@@ -21,42 +21,47 @@ const Portfolio = () => {
     {
       id: 1,
       title: "VTUN Note",
-      subtitle: "Full Stack MERN + AI",
+      subtitle: "MERN + OpenAI API — Dec 2024",
       category: "fullstack",
       image: project1,
-      link: "#",
+      link: "https://github.com/aditya-27bytes",
+      description: "AI assistant parsing PDFs for summaries, flashcards, and concept maps. 1000+ concurrent users.",
     },
     {
       id: 2,
       title: "Solar Shield",
-      subtitle: "NASA Monitor - Rust + React",
+      subtitle: "Rust + WebSockets — Nov 2024",
       category: "systems",
       image: project2,
-      link: "#",
+      link: "https://github.com/aditya-27bytes",
+      description: "NASA Space Weather Monitor with sub-100ms latency handling 10,000+ data points/min.",
     },
     {
       id: 3,
       title: "Educational Keylogger",
-      subtitle: "Cybersecurity Research",
+      subtitle: "Python + Cryptography — Oct 2024",
       category: "systems",
       image: project3,
-      link: "#",
+      link: "https://github.com/aditya-27bytes",
+      description: "Cybersecurity tool demonstrating attack vectors and defensive countermeasures.",
     },
     {
       id: 4,
       title: "AI Hand Gesture Recognition",
-      subtitle: "Computer Vision - TensorFlow",
+      subtitle: "TensorFlow + OpenCV — Sep 2024",
       category: "ai",
       image: project4,
-      link: "#",
+      link: "https://github.com/aditya-27bytes",
+      description: "Real-time computer vision with 95%+ accuracy at 30 FPS.",
     },
     {
       id: 5,
-      title: "Productivity Extension",
-      subtitle: "Chrome Extension",
+      title: "Scroll Shame Extension",
+      subtitle: "Chrome API — Aug 2024",
       category: "fullstack",
       image: project5,
-      link: "#",
+      link: "https://github.com/aditya-27bytes",
+      description: "Distraction-free YouTube extension with viewing analytics and autoplay blocking.",
     },
   ];
 
@@ -90,6 +95,8 @@ const Portfolio = () => {
           <a
             key={project.id}
             href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
             className="project-card group block animate-scale-in"
             style={{ animationDelay: `${index * 100}ms` }}
           >
@@ -102,7 +109,8 @@ const Portfolio = () => {
             </div>
             <div className="absolute inset-0 flex flex-col justify-end p-5 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <h3 className="text-lg font-semibold text-foreground">{project.title}</h3>
-              <p className="text-sm text-muted-foreground mb-3">{project.subtitle}</p>
+              <p className="text-sm text-primary mb-1">{project.subtitle}</p>
+              <p className="text-xs text-muted-foreground mb-3">{project.description}</p>
               <span className="inline-flex items-center gap-1 text-primary text-sm font-medium">
                 View Project <ExternalLink className="w-4 h-4" />
               </span>
