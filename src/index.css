@@ -6,74 +6,74 @@
 
 @layer base {
   :root {
-    --background: 348 26% 97%; /* snow */
-    --foreground: 307 26% 25%; /* blackberry-cream */
+    --background: 263 100% 8%; /* dark-amethyst */
+    --foreground: 277 100% 83%; /* mauve */
 
-    --card: 348 26% 97%; /* snow */
-    --card-foreground: 307 26% 25%;
+    --card: 271 100% 14%; /* dark-amethyst-2 */
+    --card-foreground: 277 100% 83%;
 
-    --popover: 348 26% 97%;
-    --popover-foreground: 307 26% 25%;
+    --popover: 271 100% 14%;
+    --popover-foreground: 277 100% 83%;
 
-    --primary: 307 26% 25%; /* blackberry-cream - main accent */
-    --primary-foreground: 348 26% 97%;
+    --primary: 274 68% 59%; /* lavender-purple */
+    --primary-foreground: 263 100% 8%;
 
-    --secondary: 267 30% 79%; /* thistle - soft purple */
-    --secondary-foreground: 307 26% 25%;
+    --secondary: 274 87% 23%; /* indigo-ink */
+    --secondary-foreground: 277 100% 83%;
 
-    --muted: 267 25% 90%; /* lighter thistle for muted backgrounds */
-    --muted-foreground: 280 17% 42%; /* dusty-lavender */
+    --muted: 271 77% 35%; /* indigo-velvet */
+    --muted-foreground: 274 100% 74%; /* mauve-magic */
 
-    --accent: 280 17% 42%; /* dusty-lavender */
-    --accent-foreground: 348 26% 97%;
+    --accent: 273 63% 46%; /* royal-violet */
+    --accent-foreground: 277 100% 83%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 348 26% 97%;
+    --destructive-foreground: 277 100% 83%;
 
-    --border: 267 20% 85%;
-    --input: 267 20% 90%;
-    --ring: 307 26% 25%;
+    --border: 271 60% 25%;
+    --input: 271 60% 20%;
+    --ring: 274 68% 59%;
 
     --radius: 0.75rem;
 
     /* Custom portfolio colors */
-    --gold-start: 307 26% 25%; /* blackberry-cream */
-    --gold-end: 280 17% 42%; /* dusty-lavender */
-    --dark-1: 0 0% 0%; /* black */
-    --dark-2: 307 26% 25%;
-    --dark-3: 280 17% 42%;
-    --text-light: 280 15% 55%;
+    --gold-start: 274 68% 59%; /* lavender-purple */
+    --gold-end: 274 100% 74%; /* mauve-magic */
+    --dark-1: 263 100% 8%;
+    --dark-2: 271 100% 14%;
+    --dark-3: 274 87% 23%;
+    --text-light: 274 100% 74%;
 
-    --sidebar-background: 307 26% 25%; /* blackberry-cream */
-    --sidebar-foreground: 348 26% 97%; /* snow */
-    --sidebar-primary: 267 30% 79%; /* thistle */
-    --sidebar-primary-foreground: 307 26% 25%;
-    --sidebar-accent: 280 17% 35%; /* darker dusty-lavender */
-    --sidebar-accent-foreground: 348 26% 97%;
-    --sidebar-border: 280 20% 35%;
-    --sidebar-ring: 267 30% 79%;
+    --sidebar-background: 271 100% 14%; /* dark-amethyst-2 */
+    --sidebar-foreground: 277 100% 83%; /* mauve */
+    --sidebar-primary: 274 68% 59%; /* lavender-purple */
+    --sidebar-primary-foreground: 263 100% 8%;
+    --sidebar-accent: 274 87% 23%; /* indigo-ink */
+    --sidebar-accent-foreground: 277 100% 83%;
+    --sidebar-border: 271 60% 25%;
+    --sidebar-ring: 274 68% 59%;
   }
 
   .dark {
-    --background: 0 0% 0%; /* black */
-    --foreground: 348 26% 97%; /* snow */
-    --card: 307 26% 18%;
-    --card-foreground: 348 26% 97%;
-    --popover: 307 26% 18%;
-    --popover-foreground: 348 26% 97%;
-    --primary: 267 30% 79%; /* thistle */
-    --primary-foreground: 0 0% 0%;
-    --secondary: 307 26% 25%;
-    --secondary-foreground: 348 26% 97%;
-    --muted: 307 20% 20%;
-    --muted-foreground: 267 25% 70%;
-    --accent: 280 17% 42%; /* dusty-lavender */
-    --accent-foreground: 348 26% 97%;
+    --background: 263 100% 8%;
+    --foreground: 277 100% 83%;
+    --card: 271 100% 14%;
+    --card-foreground: 277 100% 83%;
+    --popover: 271 100% 14%;
+    --popover-foreground: 277 100% 83%;
+    --primary: 274 68% 59%;
+    --primary-foreground: 263 100% 8%;
+    --secondary: 274 87% 23%;
+    --secondary-foreground: 277 100% 83%;
+    --muted: 271 77% 35%;
+    --muted-foreground: 274 100% 74%;
+    --accent: 273 63% 46%;
+    --accent-foreground: 277 100% 83%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 348 26% 97%;
-    --border: 307 20% 30%;
-    --input: 307 20% 30%;
-    --ring: 267 30% 79%;
+    --destructive-foreground: 277 100% 83%;
+    --border: 271 60% 25%;
+    --input: 271 60% 20%;
+    --ring: 274 68% 59%;
   }
 }
 
