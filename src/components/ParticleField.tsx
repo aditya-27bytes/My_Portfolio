@@ -11,11 +11,23 @@ interface Particle {
   twinkleOffset: number;
 }
 
+interface ShootingStar {
+  x: number;
+  y: number;
+  length: number;
+  speed: number;
+  opacity: number;
+  angle: number;
+  active: boolean;
+}
+
 const ParticleField = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
+  const shootingStarsRef = useRef<ShootingStar[]>([]);
   const animationRef = useRef<number>();
   const mouseRef = useRef({ x: 0, y: 0 });
+  const lastShootingStarTime = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -49,6 +61,19 @@ const ParticleField = () => {
       particlesRef.current = particles;
     };
 
+    const createShootingStar = (): ShootingStar => {
+      const angle = (Math.PI / 6) + Math.random() * (Math.PI / 6); // 30-60 degrees
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * (canvas.height * 0.4),
+        length: 80 + Math.random() * 60,
+        speed: 15 + Math.random() * 10,
+        opacity: 1,
+        angle,
+        active: true,
+      };
+    };
+
     const drawParticle = (particle: Particle, time: number) => {
       const twinkle = Math.sin(time * particle.twinkleSpeed + particle.twinkleOffset) * 0.3 + 0.7;
       const finalOpacity = particle.opacity * twinkle;
@@ -74,6 +99,63 @@ const ParticleField = () => {
       ctx.fill();
     };
 
+    const drawShootingStar = (star: ShootingStar) => {
+      if (!star.active) return;
+
+      const tailX = star.x - Math.cos(star.angle) * star.length;
+      const tailY = star.y - Math.sin(star.angle) * star.length;
+
+      // Create gradient for the tail
+      const gradient = ctx.createLinearGradient(star.x, star.y, tailX, tailY);
+      gradient.addColorStop(0, `hsla(277, 100%, 95%, ${star.opacity})`);
+      gradient.addColorStop(0.3, `hsla(274, 68%, 59%, ${star.opacity * 0.6})`);
+      gradient.addColorStop(1, "transparent");
+
+      // Draw tail
+      ctx.beginPath();
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.moveTo(star.x, star.y);
+      ctx.lineTo(tailX, tailY);
+      ctx.stroke();
+
+      // Draw head glow
+      const headGradient = ctx.createRadialGradient(
+        star.x, star.y, 0,
+        star.x, star.y, 8
+      );
+      headGradient.addColorStop(0, `hsla(277, 100%, 95%, ${star.opacity})`);
+      headGradient.addColorStop(0.5, `hsla(274, 68%, 59%, ${star.opacity * 0.5})`);
+      headGradient.addColorStop(1, "transparent");
+
+      ctx.beginPath();
+      ctx.fillStyle = headGradient;
+      ctx.arc(star.x, star.y, 8, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw bright core
+      ctx.beginPath();
+      ctx.fillStyle = `hsla(277, 100%, 95%, ${star.opacity})`;
+      ctx.arc(star.x, star.y, 2, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    const updateShootingStar = (star: ShootingStar) => {
+      if (!star.active) return;
+
+      star.x += Math.cos(star.angle) * star.speed;
+      star.y += Math.sin(star.angle) * star.speed;
+
+      // Fade out as it travels
+      star.opacity -= 0.015;
+
+      // Deactivate if off screen or faded
+      if (star.x > canvas.width + 100 || star.y > canvas.height + 100 || star.opacity <= 0) {
+        star.active = false;
+      }
+    };
+
     const connectParticles = (particles: Particle[]) => {
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -96,6 +178,23 @@ const ParticleField = () => {
 
     const animate = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Spawn shooting stars randomly (every 2-5 seconds)
+      if (time - lastShootingStarTime.current > 2000 + Math.random() * 3000) {
+        if (Math.random() > 0.3) {
+          shootingStarsRef.current.push(createShootingStar());
+        }
+        lastShootingStarTime.current = time;
+      }
+
+      // Update and draw shooting stars
+      shootingStarsRef.current.forEach((star) => {
+        updateShootingStar(star);
+        drawShootingStar(star);
+      });
+
+      // Clean up inactive shooting stars
+      shootingStarsRef.current = shootingStarsRef.current.filter((star) => star.active);
 
       particlesRef.current.forEach((particle) => {
         // Mouse interaction
