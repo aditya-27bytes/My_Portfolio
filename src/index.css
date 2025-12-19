@@ -6,74 +6,74 @@
 
 @layer base {
   :root {
-    --background: 24 100% 94%; /* linen */
-    --foreground: 219 59% 13%; /* prussian-blue */
+    --background: 348 26% 97%; /* snow */
+    --foreground: 307 26% 25%; /* blackberry-cream */
 
-    --card: 73 50% 97%; /* ivory */
-    --card-foreground: 219 59% 13%;
+    --card: 348 26% 97%; /* snow */
+    --card-foreground: 307 26% 25%;
 
-    --popover: 73 50% 97%;
-    --popover-foreground: 219 59% 13%;
+    --popover: 348 26% 97%;
+    --popover-foreground: 307 26% 25%;
 
-    --primary: 219 59% 13%; /* prussian-blue */
-    --primary-foreground: 24 100% 94%;
+    --primary: 307 26% 25%; /* blackberry-cream - main accent */
+    --primary-foreground: 348 26% 97%;
 
-    --secondary: 189 100% 92%; /* light-cyan */
-    --secondary-foreground: 219 59% 13%;
+    --secondary: 267 30% 79%; /* thistle - soft purple */
+    --secondary-foreground: 307 26% 25%;
 
-    --muted: 219 100% 84%; /* baby-blue-ice */
-    --muted-foreground: 219 40% 35%;
+    --muted: 267 25% 90%; /* lighter thistle for muted backgrounds */
+    --muted-foreground: 280 17% 42%; /* dusty-lavender */
 
-    --accent: 219 100% 84%; /* baby-blue-ice */
-    --accent-foreground: 219 59% 13%;
+    --accent: 280 17% 42%; /* dusty-lavender */
+    --accent-foreground: 348 26% 97%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 348 26% 97%;
 
-    --border: 219 30% 80%;
-    --input: 219 30% 85%;
-    --ring: 219 59% 13%;
+    --border: 267 20% 85%;
+    --input: 267 20% 90%;
+    --ring: 307 26% 25%;
 
     --radius: 0.75rem;
 
     /* Custom portfolio colors */
-    --gold-start: 219 59% 13%;
-    --gold-end: 219 100% 84%;
-    --dark-1: 219 59% 13%;
-    --dark-2: 219 50% 18%;
-    --dark-3: 219 45% 22%;
-    --text-light: 219 30% 45%;
+    --gold-start: 307 26% 25%; /* blackberry-cream */
+    --gold-end: 280 17% 42%; /* dusty-lavender */
+    --dark-1: 0 0% 0%; /* black */
+    --dark-2: 307 26% 25%;
+    --dark-3: 280 17% 42%;
+    --text-light: 280 15% 55%;
 
-    --sidebar-background: 219 59% 13%; /* prussian-blue */
-    --sidebar-foreground: 24 100% 94%;
-    --sidebar-primary: 189 100% 92%;
-    --sidebar-primary-foreground: 219 59% 13%;
-    --sidebar-accent: 219 50% 20%;
-    --sidebar-accent-foreground: 24 100% 94%;
-    --sidebar-border: 219 40% 25%;
-    --sidebar-ring: 189 100% 92%;
+    --sidebar-background: 307 26% 25%; /* blackberry-cream */
+    --sidebar-foreground: 348 26% 97%; /* snow */
+    --sidebar-primary: 267 30% 79%; /* thistle */
+    --sidebar-primary-foreground: 307 26% 25%;
+    --sidebar-accent: 280 17% 35%; /* darker dusty-lavender */
+    --sidebar-accent-foreground: 348 26% 97%;
+    --sidebar-border: 280 20% 35%;
+    --sidebar-ring: 267 30% 79%;
   }
 
   .dark {
-    --background: 219 59% 13%; /* prussian-blue */
-    --foreground: 24 100% 94%; /* linen */
-    --card: 219 50% 18%;
-    --card-foreground: 24 100% 94%;
-    --popover: 219 50% 18%;
-    --popover-foreground: 24 100% 94%;
-    --primary: 189 100% 92%; /* light-cyan */
-    --primary-foreground: 219 59% 13%;
-    --secondary: 219 45% 22%;
-    --secondary-foreground: 24 100% 94%;
-    --muted: 219 40% 25%;
-    --muted-foreground: 219 30% 65%;
-    --accent: 219 100% 84%; /* baby-blue-ice */
-    --accent-foreground: 219 59% 13%;
+    --background: 0 0% 0%; /* black */
+    --foreground: 348 26% 97%; /* snow */
+    --card: 307 26% 18%;
+    --card-foreground: 348 26% 97%;
+    --popover: 307 26% 18%;
+    --popover-foreground: 348 26% 97%;
+    --primary: 267 30% 79%; /* thistle */
+    --primary-foreground: 0 0% 0%;
+    --secondary: 307 26% 25%;
+    --secondary-foreground: 348 26% 97%;
+    --muted: 307 20% 20%;
+    --muted-foreground: 267 25% 70%;
+    --accent: 280 17% 42%; /* dusty-lavender */
+    --accent-foreground: 348 26% 97%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 219 35% 28%;
-    --input: 219 35% 28%;
-    --ring: 189 100% 92%;
+    --destructive-foreground: 348 26% 97%;
+    --border: 307 20% 30%;
+    --input: 307 20% 30%;
+    --ring: 267 30% 79%;
   }
 }
 
