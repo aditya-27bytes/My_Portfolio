@@ -66,8 +66,8 @@ const ParticleField = () => {
       return {
         x: Math.random() * canvas.width * 0.7,
         y: Math.random() * (canvas.height * 0.5),
-        length: 100 + Math.random() * 100,
-        speed: 20 + Math.random() * 15,
+        length: 80 + Math.random() * 60,
+        speed: 6 + Math.random() * 4, // Much slower: 6-10 instead of 20-35
         opacity: 1,
         angle,
         active: true,
@@ -162,8 +162,8 @@ const ParticleField = () => {
       star.x += Math.cos(star.angle) * star.speed;
       star.y += Math.sin(star.angle) * star.speed;
 
-      // Fade out as it travels
-      star.opacity -= 0.015;
+      // Slower fade out for longer trails
+      star.opacity -= 0.006;
 
       // Deactivate if off screen or faded
       if (star.x > canvas.width + 100 || star.y > canvas.height + 100 || star.opacity <= 0) {

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, Code, Brain, Shield, Cloud } from "lucide-react";
 import ParticleField from "@/components/ParticleField";
 import AuroraEffect from "@/components/AuroraEffect";
+import NebulaEffect from "@/components/NebulaEffect";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -22,10 +23,13 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Aurora effect - behind everything */}
+      {/* Nebula effect - deepest layer */}
+      <NebulaEffect />
+      
+      {/* Aurora effect */}
       <AuroraEffect />
       
-      {/* Particle field */}
+      {/* Particle field with shooting stars */}
       <ParticleField />
 
       {/* Animated gradient background */}
