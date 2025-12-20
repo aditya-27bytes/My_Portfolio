@@ -3,12 +3,13 @@ import { useEffect, useRef } from "react";
 const AuroraEffect = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
+  const startTimeRef = useRef<number>(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     const resizeCanvas = () => {
@@ -16,111 +17,103 @@ const AuroraEffect = () => {
       canvas.height = window.innerHeight;
     };
 
-    let time = 0;
+    const drawAurora = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const elapsed = (timestamp - startTimeRef.current) * 0.001; // Convert to seconds
 
-    const drawAurora = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Create multiple aurora layers
+      // Simplified aurora layers with smoother movement
       const layers = [
-        { color: "hsl(274, 68%, 59%)", yOffset: 0.15, amplitude: 80, speed: 0.0008 },
-        { color: "hsl(277, 100%, 74%)", yOffset: 0.2, amplitude: 60, speed: 0.001 },
-        { color: "hsl(280, 80%, 65%)", yOffset: 0.25, amplitude: 100, speed: 0.0006 },
-        { color: "hsl(260, 70%, 55%)", yOffset: 0.18, amplitude: 70, speed: 0.0012 },
+        { hue: 274, saturation: 68, lightness: 59, yOffset: 0.12, amplitude: 40, speed: 0.15 },
+        { hue: 280, saturation: 80, lightness: 65, yOffset: 0.18, amplitude: 50, speed: 0.12 },
+        { hue: 260, saturation: 70, lightness: 55, yOffset: 0.08, amplitude: 35, speed: 0.18 },
       ];
 
       layers.forEach((layer, layerIndex) => {
-        ctx.beginPath();
-        
         const baseY = canvas.height * layer.yOffset;
-        const points: { x: number; y: number }[] = [];
-
-        // Generate wave points
-        for (let x = 0; x <= canvas.width; x += 5) {
-          const wave1 = Math.sin((x * 0.003) + (time * layer.speed * 1000)) * layer.amplitude;
-          const wave2 = Math.sin((x * 0.005) + (time * layer.speed * 800) + layerIndex) * (layer.amplitude * 0.5);
-          const wave3 = Math.sin((x * 0.001) + (time * layer.speed * 600)) * (layer.amplitude * 0.3);
-          
-          const y = baseY + wave1 + wave2 + wave3;
-          points.push({ x, y });
-        }
-
-        // Draw the aurora shape
-        ctx.moveTo(0, canvas.height * 0.5);
-        ctx.lineTo(0, points[0].y);
-
-        points.forEach((point, i) => {
-          if (i < points.length - 1) {
-            const nextPoint = points[i + 1];
-            const cpX = (point.x + nextPoint.x) / 2;
-            const cpY = (point.y + nextPoint.y) / 2;
-            ctx.quadraticCurveTo(point.x, point.y, cpX, cpY);
-          }
-        });
-
-        ctx.lineTo(canvas.width, canvas.height * 0.5);
-        ctx.lineTo(canvas.width, 0);
-        ctx.lineTo(0, 0);
-        ctx.closePath();
-
-        // Create gradient for this layer
+        
+        // Create smooth gradient fill
         const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 0.5);
         gradient.addColorStop(0, "transparent");
-        gradient.addColorStop(0.3, layer.color.replace(")", ", 0.03)").replace("hsl", "hsla"));
-        gradient.addColorStop(0.5, layer.color.replace(")", ", 0.08)").replace("hsl", "hsla"));
-        gradient.addColorStop(0.7, layer.color.replace(")", ", 0.04)").replace("hsl", "hsla"));
+        gradient.addColorStop(0.2, `hsla(${layer.hue}, ${layer.saturation}%, ${layer.lightness}%, 0.02)`);
+        gradient.addColorStop(0.4, `hsla(${layer.hue}, ${layer.saturation}%, ${layer.lightness}%, 0.06)`);
+        gradient.addColorStop(0.6, `hsla(${layer.hue}, ${layer.saturation}%, ${layer.lightness}%, 0.04)`);
         gradient.addColorStop(1, "transparent");
 
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+
+        // Generate smoother wave with fewer calculation points
+        const step = 20;
+        for (let x = 0; x <= canvas.width + step; x += step) {
+          const wave1 = Math.sin((x * 0.002) + (elapsed * layer.speed)) * layer.amplitude;
+          const wave2 = Math.sin((x * 0.004) + (elapsed * layer.speed * 0.7) + layerIndex * 2) * (layer.amplitude * 0.4);
+          const y = baseY + wave1 + wave2;
+          
+          if (x === 0) {
+            ctx.lineTo(x, y);
+          } else {
+            // Use bezier curves for smoother lines
+            const prevX = x - step;
+            const prevWave1 = Math.sin((prevX * 0.002) + (elapsed * layer.speed)) * layer.amplitude;
+            const prevWave2 = Math.sin((prevX * 0.004) + (elapsed * layer.speed * 0.7) + layerIndex * 2) * (layer.amplitude * 0.4);
+            const prevY = baseY + prevWave1 + prevWave2;
+            
+            const cpX = (prevX + x) / 2;
+            ctx.quadraticCurveTo(prevX, prevY, cpX, (prevY + y) / 2);
+          }
+        }
+
+        ctx.lineTo(canvas.width, 0);
+        ctx.closePath();
         ctx.fillStyle = gradient;
         ctx.fill();
 
-        // Add glowing edge
-        const edgeGradient = ctx.createLinearGradient(0, baseY - layer.amplitude, 0, baseY + layer.amplitude * 2);
-        edgeGradient.addColorStop(0, "transparent");
-        edgeGradient.addColorStop(0.4, layer.color.replace(")", ", 0.15)").replace("hsl", "hsla"));
-        edgeGradient.addColorStop(0.5, layer.color.replace(")", ", 0.25)").replace("hsl", "hsla"));
-        edgeGradient.addColorStop(0.6, layer.color.replace(")", ", 0.15)").replace("hsl", "hsla"));
-        edgeGradient.addColorStop(1, "transparent");
-
+        // Add subtle glow line along the wave edge
         ctx.beginPath();
-        points.forEach((point, i) => {
-          if (i === 0) {
-            ctx.moveTo(point.x, point.y);
+        for (let x = 0; x <= canvas.width; x += step) {
+          const wave1 = Math.sin((x * 0.002) + (elapsed * layer.speed)) * layer.amplitude;
+          const wave2 = Math.sin((x * 0.004) + (elapsed * layer.speed * 0.7) + layerIndex * 2) * (layer.amplitude * 0.4);
+          const y = baseY + wave1 + wave2;
+          
+          if (x === 0) {
+            ctx.moveTo(x, y);
           } else {
-            const prevPoint = points[i - 1];
-            const cpX = (prevPoint.x + point.x) / 2;
-            const cpY = (prevPoint.y + point.y) / 2;
-            ctx.quadraticCurveTo(prevPoint.x, prevPoint.y, cpX, cpY);
+            const prevX = x - step;
+            const prevWave1 = Math.sin((prevX * 0.002) + (elapsed * layer.speed)) * layer.amplitude;
+            const prevWave2 = Math.sin((prevX * 0.004) + (elapsed * layer.speed * 0.7) + layerIndex * 2) * (layer.amplitude * 0.4);
+            const prevY = baseY + prevWave1 + prevWave2;
+            ctx.quadraticCurveTo(prevX, prevY, (prevX + x) / 2, (prevY + y) / 2);
           }
-        });
-
-        ctx.strokeStyle = edgeGradient;
-        ctx.lineWidth = 3;
+        }
+        
+        ctx.strokeStyle = `hsla(${layer.hue}, ${layer.saturation}%, ${layer.lightness + 20}%, 0.15)`;
+        ctx.lineWidth = 2;
         ctx.stroke();
       });
 
-      // Add vertical light rays
-      const rayCount = 8;
+      // Subtle vertical shimmer rays
+      const rayCount = 5;
       for (let i = 0; i < rayCount; i++) {
-        const x = (canvas.width / rayCount) * i + Math.sin(time * 0.0005 + i) * 50;
-        const opacity = 0.02 + Math.sin(time * 0.001 + i * 0.5) * 0.02;
+        const baseX = (canvas.width / (rayCount + 1)) * (i + 1);
+        const x = baseX + Math.sin(elapsed * 0.3 + i * 1.5) * 30;
+        const opacity = 0.015 + Math.sin(elapsed * 0.2 + i) * 0.01;
         
-        const rayGradient = ctx.createLinearGradient(x, 0, x, canvas.height * 0.4);
-        rayGradient.addColorStop(0, `hsla(274, 68%, 59%, ${opacity})`);
-        rayGradient.addColorStop(0.5, `hsla(277, 100%, 74%, ${opacity * 1.5})`);
+        const rayGradient = ctx.createLinearGradient(x, 0, x, canvas.height * 0.35);
+        rayGradient.addColorStop(0, `hsla(277, 80%, 70%, ${opacity})`);
+        rayGradient.addColorStop(0.5, `hsla(274, 68%, 59%, ${opacity * 0.8})`);
         rayGradient.addColorStop(1, "transparent");
 
-        ctx.beginPath();
         ctx.fillStyle = rayGradient;
-        ctx.fillRect(x - 30, 0, 60, canvas.height * 0.4);
+        ctx.fillRect(x - 40, 0, 80, canvas.height * 0.35);
       }
 
-      time++;
       animationRef.current = requestAnimationFrame(drawAurora);
     };
 
     resizeCanvas();
-    drawAurora();
+    animationRef.current = requestAnimationFrame(drawAurora);
 
     window.addEventListener("resize", resizeCanvas);
 
@@ -135,7 +128,7 @@ const AuroraEffect = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none"
+      className="absolute inset-0 pointer-events-none blur-sm"
       style={{ zIndex: 0 }}
     />
   );
