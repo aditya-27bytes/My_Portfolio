@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Code, Brain, Shield, Cloud } from "lucide-react";
 import ParticleField from "@/components/ParticleField";
+import AuroraEffect from "@/components/AuroraEffect";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -21,6 +22,9 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Aurora effect - behind everything */}
+      <AuroraEffect />
+      
       {/* Particle field */}
       <ParticleField />
 

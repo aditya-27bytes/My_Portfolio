@@ -49,10 +49,10 @@ const ParticleField = () => {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 2 + 0.5,
+          size: Math.random() * 2.5 + 0.8,
           speedX: (Math.random() - 0.5) * 0.3,
           speedY: (Math.random() - 0.5) * 0.3,
-          opacity: Math.random() * 0.5 + 0.2,
+          opacity: Math.random() * 0.7 + 0.3,
           twinkleSpeed: Math.random() * 0.02 + 0.01,
           twinkleOffset: Math.random() * Math.PI * 2,
         });
@@ -62,12 +62,12 @@ const ParticleField = () => {
     };
 
     const createShootingStar = (): ShootingStar => {
-      const angle = (Math.PI / 6) + Math.random() * (Math.PI / 6); // 30-60 degrees
+      const angle = (Math.PI / 6) + Math.random() * (Math.PI / 4); // 30-75 degrees for variety
       return {
-        x: Math.random() * canvas.width,
-        y: Math.random() * (canvas.height * 0.4),
-        length: 80 + Math.random() * 60,
-        speed: 15 + Math.random() * 10,
+        x: Math.random() * canvas.width * 0.7,
+        y: Math.random() * (canvas.height * 0.5),
+        length: 100 + Math.random() * 100,
+        speed: 20 + Math.random() * 15,
         opacity: 1,
         angle,
         active: true,
@@ -105,39 +105,54 @@ const ParticleField = () => {
       const tailX = star.x - Math.cos(star.angle) * star.length;
       const tailY = star.y - Math.sin(star.angle) * star.length;
 
-      // Create gradient for the tail
+      // Create gradient for the tail - brighter colors
       const gradient = ctx.createLinearGradient(star.x, star.y, tailX, tailY);
-      gradient.addColorStop(0, `hsla(277, 100%, 95%, ${star.opacity})`);
-      gradient.addColorStop(0.3, `hsla(274, 68%, 59%, ${star.opacity * 0.6})`);
+      gradient.addColorStop(0, `hsla(277, 100%, 100%, ${star.opacity})`);
+      gradient.addColorStop(0.2, `hsla(277, 100%, 95%, ${star.opacity * 0.9})`);
+      gradient.addColorStop(0.4, `hsla(274, 80%, 70%, ${star.opacity * 0.7})`);
       gradient.addColorStop(1, "transparent");
 
-      // Draw tail
+      // Draw thicker, brighter tail
       ctx.beginPath();
       ctx.strokeStyle = gradient;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 3;
       ctx.lineCap = "round";
       ctx.moveTo(star.x, star.y);
       ctx.lineTo(tailX, tailY);
       ctx.stroke();
 
-      // Draw head glow
+      // Draw outer glow
+      const outerGlow = ctx.createRadialGradient(
+        star.x, star.y, 0,
+        star.x, star.y, 20
+      );
+      outerGlow.addColorStop(0, `hsla(277, 100%, 100%, ${star.opacity * 0.6})`);
+      outerGlow.addColorStop(0.3, `hsla(274, 80%, 70%, ${star.opacity * 0.3})`);
+      outerGlow.addColorStop(1, "transparent");
+
+      ctx.beginPath();
+      ctx.fillStyle = outerGlow;
+      ctx.arc(star.x, star.y, 20, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw head glow - larger and brighter
       const headGradient = ctx.createRadialGradient(
         star.x, star.y, 0,
-        star.x, star.y, 8
+        star.x, star.y, 12
       );
-      headGradient.addColorStop(0, `hsla(277, 100%, 95%, ${star.opacity})`);
-      headGradient.addColorStop(0.5, `hsla(274, 68%, 59%, ${star.opacity * 0.5})`);
+      headGradient.addColorStop(0, `hsla(277, 100%, 100%, ${star.opacity})`);
+      headGradient.addColorStop(0.4, `hsla(274, 80%, 80%, ${star.opacity * 0.7})`);
       headGradient.addColorStop(1, "transparent");
 
       ctx.beginPath();
       ctx.fillStyle = headGradient;
-      ctx.arc(star.x, star.y, 8, 0, Math.PI * 2);
+      ctx.arc(star.x, star.y, 12, 0, Math.PI * 2);
       ctx.fill();
 
-      // Draw bright core
+      // Draw bright core - larger
       ctx.beginPath();
-      ctx.fillStyle = `hsla(277, 100%, 95%, ${star.opacity})`;
-      ctx.arc(star.x, star.y, 2, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(277, 100%, 100%, ${star.opacity})`;
+      ctx.arc(star.x, star.y, 4, 0, Math.PI * 2);
       ctx.fill();
     };
 
@@ -179,10 +194,15 @@ const ParticleField = () => {
     const animate = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Spawn shooting stars randomly (every 2-5 seconds)
-      if (time - lastShootingStarTime.current > 2000 + Math.random() * 3000) {
-        if (Math.random() > 0.3) {
+      // Spawn shooting stars more frequently (every 0.5-1.5 seconds)
+      if (time - lastShootingStarTime.current > 500 + Math.random() * 1000) {
+        // Higher chance of spawning (80% instead of 70%)
+        if (Math.random() > 0.2) {
           shootingStarsRef.current.push(createShootingStar());
+          // Sometimes spawn multiple at once for meteor shower effect
+          if (Math.random() > 0.7) {
+            shootingStarsRef.current.push(createShootingStar());
+          }
         }
         lastShootingStarTime.current = time;
       }
