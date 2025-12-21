@@ -17,6 +17,7 @@ const NebulaEffect = () => {
   const animationRef = useRef<number>();
   const cloudsRef = useRef<NebulaCloud[]>([]);
   const startTimeRef = useRef<number>(0);
+  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -127,17 +128,31 @@ const NebulaEffect = () => {
       ctx.globalCompositeOperation = "source-over";
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current.targetX = (e.clientX / canvas.width - 0.5) * 2;
+      mouseRef.current.targetY = (e.clientY / canvas.height - 0.5) * 2;
+    };
+
     const animate = (timestamp: number) => {
       if (!startTimeRef.current) startTimeRef.current = timestamp;
       const elapsed = (timestamp - startTimeRef.current) * 0.001;
+
+      // Smooth mouse interpolation for parallax
+      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
+      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Draw gas streaks first (background)
       drawGasStreaks(elapsed);
 
-      // Update and draw nebula clouds
-      cloudsRef.current.forEach((cloud) => {
+      // Update and draw nebula clouds with parallax
+      cloudsRef.current.forEach((cloud, index) => {
+        // Parallax offset based on mouse position and cloud depth
+        const parallaxStrength = 30 + (index % 4) * 15; // Different depths
+        const parallaxX = mouseRef.current.x * parallaxStrength;
+        const parallaxY = mouseRef.current.y * parallaxStrength;
+
         // Slow drift movement
         cloud.x += cloud.driftX;
         cloud.y += cloud.driftY;
@@ -148,7 +163,14 @@ const NebulaEffect = () => {
         if (cloud.y < -cloud.radius) cloud.y = canvas.height + cloud.radius;
         if (cloud.y > canvas.height + cloud.radius) cloud.y = -cloud.radius;
 
+        // Draw with parallax offset
+        const originalX = cloud.x;
+        const originalY = cloud.y;
+        cloud.x += parallaxX;
+        cloud.y += parallaxY;
         drawCloud(cloud, elapsed);
+        cloud.x = originalX;
+        cloud.y = originalY;
       });
 
       // Draw cosmic dust particles
@@ -156,6 +178,8 @@ const NebulaEffect = () => {
 
       animationRef.current = requestAnimationFrame(animate);
     };
+
+    window.addEventListener("mousemove", handleMouseMove);
 
     resizeCanvas();
     animationRef.current = requestAnimationFrame(animate);
@@ -167,6 +191,7 @@ const NebulaEffect = () => {
         cancelAnimationFrame(animationRef.current);
       }
       window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
