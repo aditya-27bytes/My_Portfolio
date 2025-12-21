@@ -7,10 +7,6 @@ interface Particle {
   speedX: number;
   speedY: number;
   opacity: number;
-  twinkleSpeed: number;
-  twinkleOffset: number;
-  isBright: boolean; // For special twinkling stars
-  twinkleIntensity: number;
 }
 
 interface ShootingStar {
@@ -48,18 +44,13 @@ const ParticleField = () => {
       const particleCount = Math.floor((canvas.width * canvas.height) / 8000);
 
       for (let i = 0; i < particleCount; i++) {
-        const isBright = Math.random() > 0.85; // 15% chance to be a bright twinkling star
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: isBright ? Math.random() * 3 + 2 : Math.random() * 2.5 + 0.8,
+          size: Math.random() * 2.5 + 0.8,
           speedX: (Math.random() - 0.5) * 0.3,
           speedY: (Math.random() - 0.5) * 0.3,
-          opacity: isBright ? 0.9 + Math.random() * 0.1 : Math.random() * 0.7 + 0.3,
-          twinkleSpeed: isBright ? Math.random() * 0.08 + 0.04 : Math.random() * 0.02 + 0.01,
-          twinkleOffset: Math.random() * Math.PI * 2,
-          isBright,
-          twinkleIntensity: isBright ? 0.6 + Math.random() * 0.4 : 0.3,
+          opacity: Math.random() * 0.7 + 0.3,
         });
       }
 
@@ -79,56 +70,14 @@ const ParticleField = () => {
       };
     };
 
-    const drawParticle = (particle: Particle, time: number) => {
-      // Enhanced twinkling for bright stars with multiple sine waves
-      let twinkle: number;
-      if (particle.isBright) {
-        // Complex twinkling pattern for bright stars
-        const wave1 = Math.sin(time * particle.twinkleSpeed + particle.twinkleOffset);
-        const wave2 = Math.sin(time * particle.twinkleSpeed * 2.3 + particle.twinkleOffset * 1.5);
-        const wave3 = Math.sin(time * particle.twinkleSpeed * 0.7 + particle.twinkleOffset * 0.8);
-        twinkle = ((wave1 + wave2 * 0.5 + wave3 * 0.3) / 1.8) * particle.twinkleIntensity + (1 - particle.twinkleIntensity / 2);
-      } else {
-        twinkle = Math.sin(time * particle.twinkleSpeed + particle.twinkleOffset) * 0.3 + 0.7;
-      }
-      const finalOpacity = particle.opacity * Math.max(0.2, twinkle);
-
-      // Draw outer glow for bright stars
-      if (particle.isBright) {
-        const outerGlow = ctx.createRadialGradient(
-          particle.x, particle.y, 0,
-          particle.x, particle.y, particle.size * 6
-        );
-        outerGlow.addColorStop(0, `hsla(277, 100%, 90%, ${finalOpacity * 0.4})`);
-        outerGlow.addColorStop(0.3, `hsla(274, 80%, 70%, ${finalOpacity * 0.2})`);
-        outerGlow.addColorStop(1, "transparent");
-        
-        ctx.beginPath();
-        ctx.fillStyle = outerGlow;
-        ctx.arc(particle.x, particle.y, particle.size * 6, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Draw cross flare for bright stars
-        const flareLength = particle.size * 4 * twinkle;
-        const flareOpacity = finalOpacity * 0.6;
-        
-        ctx.beginPath();
-        ctx.strokeStyle = `hsla(277, 100%, 95%, ${flareOpacity})`;
-        ctx.lineWidth = 1;
-        ctx.moveTo(particle.x - flareLength, particle.y);
-        ctx.lineTo(particle.x + flareLength, particle.y);
-        ctx.moveTo(particle.x, particle.y - flareLength);
-        ctx.lineTo(particle.x, particle.y + flareLength);
-        ctx.stroke();
-      }
-
+    const drawParticle = (particle: Particle) => {
       // Draw glow
       const gradient = ctx.createRadialGradient(
         particle.x, particle.y, 0,
         particle.x, particle.y, particle.size * 3
       );
-      gradient.addColorStop(0, `hsla(274, 68%, 59%, ${finalOpacity})`);
-      gradient.addColorStop(0.5, `hsla(274, 100%, 74%, ${finalOpacity * 0.5})`);
+      gradient.addColorStop(0, `hsla(274, 68%, 59%, ${particle.opacity})`);
+      gradient.addColorStop(0.5, `hsla(274, 100%, 74%, ${particle.opacity * 0.5})`);
       gradient.addColorStop(1, "transparent");
 
       ctx.beginPath();
@@ -136,11 +85,9 @@ const ParticleField = () => {
       ctx.arc(particle.x, particle.y, particle.size * 3, 0, Math.PI * 2);
       ctx.fill();
 
-      // Draw core - brighter for special stars
+      // Draw core
       ctx.beginPath();
-      ctx.fillStyle = particle.isBright 
-        ? `hsla(277, 100%, 100%, ${finalOpacity})`
-        : `hsla(277, 100%, 83%, ${finalOpacity})`;
+      ctx.fillStyle = `hsla(277, 100%, 83%, ${particle.opacity})`;
       ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
       ctx.fill();
     };
@@ -284,7 +231,7 @@ const ParticleField = () => {
         if (particle.y < 0) particle.y = canvas.height;
         if (particle.y > canvas.height) particle.y = 0;
 
-        drawParticle(particle, time);
+        drawParticle(particle);
       });
 
       connectParticles(particlesRef.current);
